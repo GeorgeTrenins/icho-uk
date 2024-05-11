@@ -231,6 +231,13 @@ Also works if we replace the Gibbs energy with energy difference:
     \text{[assuming that $\DrH\std$ does not depend on $T$]}
 \end{align}
 
+Electrochemical equilibria:
+\begin{align}
+    \mathcal{E} & = -\frac{\DrG\std}{\nu F} - \frac{R T}{\nu F} \ln Q = \mathcal{E}\std - \frac{R T}{\nu F} \ln Q \qquad \text{Nernst equation}\\
+    \mathcal{E}\std  & = -\frac{\DrG\std}{\nu F} = \frac{R T}{\nu F} \ln K
+\end{align}
+where $\nu$ is the stoichiometric coefficient of the electrons in the cell half-reactions, $F = \SI{96485}{\ampere.\second / \mole}$ and $\mathcal{E}$ is the electromotive force (EMF) with units of \SI{}{\volt}.
+
 Heat capacities:
 \begin{align}
     C_{V} & = \qty(\pdv{U}{T})_{V} & & \text{constant-volume} \\
