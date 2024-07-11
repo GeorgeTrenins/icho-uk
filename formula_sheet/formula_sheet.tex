@@ -25,10 +25,12 @@
 \numberwithin{equation}{section}
 \setlength\mathindent{5mm}
 \newcommand{\eqn}[1]{Eq.~\eqref{#1}}
+\newcommand{\eqs}[2]{Eqs.~\eqref{#1} and~\eqref{#2}}
 \newcommand{\DrG}{\ensuremath{\Delta_{\mathrm{r}}G}}
 \newcommand{\DrH}{\ensuremath{\Delta_{\mathrm{r}}H}}
 \newcommand{\std}{^{\standardstate}}
 \newcommand{\ca}{\ensuremath{c_{\rm a}}}
+\newcommand{\kn}[1]{$k$\textsubscript{$#1$}}
 % Define a new column type for centered text with equal width
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 
@@ -337,5 +339,140 @@ Henderson--Hasselbalch equation:
 \begin{equation}
     \pH = \pKa + \log_{10} \qty( \frac{[\ce{A-}]}{[\ce{HA}]} )
 \end{equation}
+
+\section{Kinetics}
+
+\subsection{Enzyme kinetics}
+
+\begin{reactions*}
+    E + S  &<=>[\kn{1}][\kn{-1}] ES ->[\kn{2}] E + P
+\end{reactions*}
+E is the enzyme, S is the substrate, ES is the enzyme--substrate complex, and P is the product.
+\begin{equation}
+    \label{eq:MM-rate}
+    \text{rate} = -\dv{[\ch{ES}]}{t} = k_2 [\ch{ES}]
+\end{equation}
+
+\paragraph{Pre-equilibrium assumption}
+
+\begin{align}
+    \frac{[\ch{ES}]}{[\ch{E}][\ch{S}]} = \frac{k_{1}}{k_{-1}} \quad & \Rightarrow \quad 
+    [\ch{ES}] = \frac{k_{1}}{k_{-1}} [\ch{E}][\ch{S}]
+    \label{eq:preeq-ES}
+     \\
+    [\ch{E}]_0 =  [\ch{E}] + [\ch{ES}] \quad & \Rightarrow \quad [\ch{E}] = [\ch{E}]_0 - [\ch{ES}] \\
+    [\ch{ES}] = \frac{k_{1}}{k_{-1}} ([\ch{E}]_0 - [\ch{ES}]) [\ch{S}] 
+    \quad & \Rightarrow \quad 
+    [\ch{ES}] = \frac{\frac{k_1}{k_{-1}} [\ch{E}]_0 [\ch{S}]}{1 + \frac{k_1}{k_{-1}} [\ch{S}]}
+    \label{eq:preeq-ES-final}
+\end{align}
+Putting \eqs{eq:MM-rate}{eq:preeq-ES-final} together,
+\begin{gather}
+    \text{rate} = \frac{v_{\text{max}} [\ch{S}]}{K_{\text{M}} + [\ch{S}]} \qquad
+    \qty( v_{\text{max}} = k_2 [E]_{0} \qqtext{and}
+    K_{\text{M}} = \frac{k_{-1}}{k_{1}} ) \label{eq:MM-rate-final}
+\end{gather}
+
+\paragraph{Steady-state assumption}
+
+\begin{align}
+\dv{[\ch{ES}]}{t} = k_1 [\ch{E}][\ch{S}] - k_{-1} [\ch{ES}] - k_{2} [\ch{ES}] = 0
+\quad \Rightarrow \quad [\ch{ES}] = \frac{k_{1}}{k_{-1} + k_{2}} [\ch{E}] [\ch{S}]
+\end{align}
+The only change compared to the derivation using the pre-equilibrium assumption is that 
+$\frac{k_1}{k_{-1}}$ in Eqs.~\eqref{eq:preeq-ES}--\eqref{eq:preeq-ES-final} is replaced with
+$\frac{k_{1}}{k_{-1} + k_{2}}$, so that the rate still has the form in \eqn{eq:MM-rate}, except now $ K_{\text{M}} = \frac{k_{-1} + k_2}{k_{1}} $.
+
+\subsubsection{Competitive inhibition}
+
+\hspace*{2em}\includegraphics{competitive_inhibition.eps}\\
+
+For the derivation, we will use the pre-equilibrium assumption. Let's define
+\begin{equation}
+    K_{\text{M}} = \frac{k_{-1}}{k_{1}} \qqtext{and} K_{\text{I}} = \frac{k_{-3}}{k_{3}} 
+\end{equation}
+Then
+\begin{align}
+    K_{\text{I}} = \frac{[\ch{E}][\ch{I}]}{[\ch{EI}]} \quad & \Rightarrow \quad
+    [\ch{EI}] = \frac{[\ch{E}][\ch{I}]}{K_{\text{I}}} \\
+    [\ch{E}]_0 =  [\ch{E}] + [\ch{ES}] + \underbrace{[\ch{EI}]}_{\mathclap{[\ch{E}][\ch{I}] / K_{\text{I}}}} \quad & \Rightarrow \quad [\ch{E}] = \frac{[\ch{E}]_0 - [\ch{ES}]}{1 + [\ch{I}] / K_{\text{I}}} \\ 
+    K_{\text{M}} = \frac{[\ch{E}][\ch{S}]}{[\ch{ES}]} \quad & \Rightarrow \quad
+    [\ch{ES}] = \frac{[\ch{E}][\ch{S}]}{K_{\text{M}}} = \frac{1}{K_{\text{M}}} 
+    \qty(\frac{[\ch{E}]_0 - [\ch{ES}]}{1 + [\ch{I}] / K_{\text{I}}}) [\ch{S}]
+\end{align}
+Solving for $[\ch{ES}]$ we get
+\begin{equation}
+    \text{rate} = k_2 [\ch{ES}] = \frac{v_{\text{max}} [\ch{S}]}{K_{\text{M,eff}} + [\ch{S}]} 
+\end{equation}
+where $v_{\text{max}}$ is the same as in the uninhibited case, but
+\begin{equation}
+    K_{\text{M,eff}} = K_{\text{M}} \qty(1 + \frac{[\ch{I}]}{K_{\text{I}}}) > K_{\text{M}}
+\end{equation}
+
+\subsubsection{Uncompetitive inhibition}
+
+\hspace*{2em}\includegraphics{uncompetitive_inhibition.eps}\\
+
+$K_{\text{M}}$ and $K_{\text{I}} $ are defined as before but the pre-equilibrium approximation looks different:
+\begin{align}
+    K_{\text{I}} = \frac{[\ch{ES}][\ch{I}]}{[\ch{ESI}]} \quad & \Rightarrow \quad
+    [\ch{ESI}] = \frac{[\ch{ES}][\ch{I}]}{K_{\text{I}}} \\
+    [\ch{E}]_0 =  [\ch{E}] + [\ch{ES}] + \underbrace{[\ch{ESI}]}_{\mathclap{[\ch{ES}][\ch{I}] / K_{\text{I}}}} \quad & \Rightarrow \quad [\ch{E}] = [\ch{E}]_0 - [\ch{ES}]\qty(1 + [\ch{I}] / K_{\text{I}}) \\ 
+    K_{\text{M}} = \frac{[\ch{E}][\ch{S}]}{[\ch{ES}]} \quad & \Rightarrow \quad
+    [\ch{ES}] = \frac{[\ch{E}][\ch{S}]}{K_{\text{M}}} = \frac{1}{K_{\text{M}}} 
+    \qty\Big( [\ch{E}]_0 - [\ch{ES}]\qty(1 + [\ch{I}] / K_{\text{I}})  ) [\ch{S}]
+\end{align}
+Solving for $[\ch{ES}]$ we get
+\begin{equation}
+    \text{rate} = k_2 [\ch{ES}] = \frac{v_{\text{max}} [\ch{S}]}{K_{\text{M}} + \qty(1 + \frac{[\ch{I}]}{K_{\text{I}}})[\ch{S}]} = 
+    \frac{v_{\text{max,eff}} [\ch{S}]}{K_{\text{M,eff}} + [\ch{S}]}
+\end{equation}
+where
+\begin{equation}
+    v_{\text{max,eff}} = \frac{
+        v_{\text{max}}
+    }{
+        1 + \frac{[\ch{I}]}{K_{\text{I}}}
+    } \qqtext{and} 
+    K_{\text{M,eff}} = \frac{
+        K_{\text{M}}
+    }{
+        1 + \frac{[\ch{I}]}{K_{\text{I}}}
+    }
+\end{equation}
+i.e., both the effective maximum rate and the effective Michaelis constant are reduced compared to the uninhibited case, and the reduction is by the same factor.
+
+
+\subsubsection{Noncompetitive inhibition}
+
+\hspace*{2em}\includegraphics{noncompetitive_inhibition.eps}\\
+
+\begin{align}
+    K_{\text{I}} & = \frac{[\ch{ES}][\ch{I}]}{[\ch{ESI}]} \ \Rightarrow \
+    [\ch{ESI}] = \frac{[\ch{ES}][\ch{I}]}{K_{\text{I}}} \qqtext{and}
+    K_{\text{I}} = \frac{[\ch{E}][\ch{I}]}{[\ch{EI}]} \ \Rightarrow \
+    [\ch{EI}] = \frac{[\ch{E}][\ch{I}]}{K_{\text{I}}} \\
+    [\ch{E}]_0 & =  [\ch{E}] + [\ch{ES}] 
+        \ + \ \underbrace{[\ch{EI}]}_{\mathclap{[\ch{E}][\ch{I}] / K_{\text{I}}}}
+        \ + \ \underbrace{[\ch{ESI}]}_{\mathclap{[\ch{ES}][\ch{I}] / K_{\text{I}}}}
+        \ \Rightarrow \
+        [\ch{E}] = \frac{[\ch{E}]_0 - [\ch{ES}]\qty(1 + [\ch{I}] / K_{\text{I}})}{1 + [\ch{I}] / K_{\text{I}}} = \frac{[\ch{E}]_0}{1 + [\ch{I}] / K_{\text{I}}} - [\ch{ES}] \\
+    K_{\text{M}} & = \frac{[\ch{E}][\ch{S}]}{[\ch{ES}]} \ \Rightarrow \
+        [\ch{ES}] = \frac{[\ch{E}][\ch{S}]}{K_{\text{M}}} = \frac{1}{K_{\text{M}}} 
+        \qty\Big( \frac{[\ch{E}]_0}{1 + [\ch{I}] / K_{\text{I}}} - [\ch{ES}]  ) [\ch{S}]   
+\end{align}
+Solving for $[\ch{ES}]$,
+\begin{equation}
+    \text{rate} = k_2 [\ch{ES}] = \frac{v_{\text{max,eff}} [\ch{S}]}{K_{\text{M}} + [\ch{S}]}
+\end{equation}
+where
+\begin{equation}
+    v_{\text{max,eff}} = \frac{
+        v_{\text{max}}
+    }{
+        1 + \frac{[\ch{I}]}{K_{\text{I}}}
+    }
+\end{equation}
+and $K_{\text{M}}$ is unchanged from the uninhibited case.
 
 \end{document}
